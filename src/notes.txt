@@ -1,0 +1,12 @@
+npm i prisma --save-dev
+npx prisma init --datasource-provider sqlite
+
+//schema changes
+npx prisma db push
+
+//what is in the database
+npx prisma studio
+
+//instantiate prisma client
+https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
+
