@@ -10,3 +10,9 @@ npx prisma studio
 //instantiate prisma client
 https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
 
+//ts node for prisma seed
+npm i ts-node -D
+
+npx prisma db seed
+
+npx prisma migrate dev --name dev
