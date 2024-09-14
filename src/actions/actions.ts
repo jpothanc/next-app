@@ -50,7 +50,7 @@ export async function saveOrders(formData: FormData) {
 }
 
 export async function deleteOrders(orderIds: string[]) {
-  console.log("deleteOrders");
+  console.log(`deleting ${orderIds.length} rows`);
   try {
     const deletedOrders = await prisma.order.deleteMany({
       where: {

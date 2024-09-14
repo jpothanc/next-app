@@ -47,9 +47,14 @@ const HotTableGrid = ({
     if (!hot) return;
     console.log("Removed rows:", index, amount);
 
-    const rowData = hot.getSourceDataAtRow(index);
-    const id = Array.isArray(rowData) ? rowData[0] : rowData.id;
-    setDeletedRows((prev) => new Map(prev).set(index, String(id)));
+    //manage amount of rows
+    if (amount > 1) {
+      for (let i = 0; i < amount; i++) {
+        const rowData = hot.getSourceDataAtRow(index + i);
+        const id = Array.isArray(rowData) ? rowData[0] : rowData.id;
+        setDeletedRows((prev) => new Map(prev).set(index + i, String(id)));
+      }
+    }
 
     // Shift indexes in modifiedRows and addedRows
     setModifiedRows((prev) => {
@@ -111,7 +116,7 @@ const HotTableGrid = ({
     setAddedRows(newAddedRows);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (formData: FormData) => {
     const hot = hotTableRef.current?.hotInstance;
     if (!hot) return;
     console.log("New rows:", addedRows);
@@ -130,6 +135,82 @@ const HotTableGrid = ({
     deletedRows.forEach((value, key) => {
       console.log("Deleted row:", key, value);
     });
+    if (addedRows.size > 0) {
+      const newOrders: OrderInput[] = [];
+      addedRows.forEach((value, key) => {
+        const rowData = hot.getDataAtRow(key);
+        newOrders.push({
+          userId: rowData[1],
+          userDesk: rowData[2],
+          client: rowData[3],
+          symbol: rowData[4],
+          quantity: parseInt(rowData[5]),
+          price: parseInt(rowData[6]),
+          entity: rowData[7],
+          account: rowData[8] || "",
+          dateTime: new Date(),
+        });
+      });
+
+      formData.append("orders", JSON.stringify(newOrders));
+      try {
+        const saveResult = await saveOrders(formData);
+        if (saveResult.success) {
+          console.log(`Created ${saveResult.count} rows`);
+          setAddedRows(new Map());
+        } else {
+          console.error("Error saving new rows:", saveResult.error);
+        }
+      } catch (error) {
+        console.error("Error saving new orders:", error);
+      }
+    }
+    //save deleted rows
+    if (deletedRows.size > 0) {
+      const deletedOrderIds = Array.from(deletedRows.values());
+      const saveResult = await deleteOrders(deletedOrderIds);
+      if (saveResult.success) {
+        console.log(`Deleted ${saveResult.count} rows`);
+        setDeletedRows(new Map());
+      } else {
+        console.error("Error deleting rows:", saveResult.error);
+      }
+    }
+
+    //handle modified rows similar to new rows
+    if (modifiedRows.size > 0) {
+      const modifiedOrders: OrderInput[] = Array.from(modifiedRows).map(
+        ([key, value]) => {
+          const rowData = hot.getDataAtRow(key);
+          return {
+            orderId: value,
+            userId: rowData[1],
+            userDesk: rowData[2],
+            client: rowData[3],
+            symbol: rowData[4],
+            quantity: rowData[5],
+            price: rowData[6],
+            entity: rowData[7],
+            account: rowData[8] || "",
+            dateTime: new Date(),
+          };
+        }
+      );
+
+      formData.append("orders", JSON.stringify(modifiedOrders));
+
+      try {
+        const saveResult = await updateOrders(formData);
+        if (saveResult.success) {
+          console.log(`Updated ${saveResult.count} rows`);
+          setModifiedRows(new Map());
+        } else {
+          console.error("Error updating rows:", saveResult.error);
+        }
+      } catch (error) {
+        console.error("Error updating orders:", error);
+      }
+    }
   };
 
   return (

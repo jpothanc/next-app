@@ -20,6 +20,7 @@ const MyTable = async () => {
       <NavBar />
       <div className="flex justify-center items-center h-screen border">
         <HotTableGrid initialColHeaders={colHeaders} initialData={data} />
+        
       </div>
     </>
   );
