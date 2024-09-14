@@ -37,3 +37,18 @@ model Post {
   @@index(id)
   
 }
+
+model Order {
+  orderId   String   @id @default(cuid())
+  userId    String
+  userDesk  String
+  client    String
+  symbol    String
+  quantity  Int
+  price     Float
+  entity    String
+  account   String
+  dateTime  DateTime
+
+  @@map("orders")
+}

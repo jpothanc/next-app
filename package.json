@@ -12,7 +12,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@handsontable/react": "^14.5.0",
     "@prisma/client": "^5.19.1",
+    "handsontable": "^14.5.0",
     "highcharts-react-official": "^3.2.1",
     "next": "14.2.8",
     "react": "^18",

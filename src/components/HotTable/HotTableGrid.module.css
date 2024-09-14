@@ -1,23 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  margin: 0px;
-  padding: 0px;
-}
-
 .darkTheme {
   --hot-background: #1e1e1e;
-  --hot-text: #e0e0e0;
+  --hot-text: #efe3e3;
   --hot-cell-border: #444;
   --hot-header-background: #2a2a2a;
-  --hot-header-text: #fff;
+  --hot-header-text: #ffffff;
+  --hot-cell-background: #262626; /* New variable for cell background */
+  --hot-font-size: 15px; /* New variable for font size */
+  --hot-header-selected-background: #3a3a3a;
 }
 
 .darkTheme :global(.handsontable) {
   background-color: var(--hot-background);
   color: var(--hot-text);
+  font-size: var(--hot-font-size); /* Apply the font size */
 }
 
 .darkTheme :global(.handsontable th) {
@@ -27,6 +22,7 @@ body {
 
 .darkTheme :global(.handsontable td) {
   border-color: var(--hot-cell-border);
+  background-color: var(--hot-cell-background);
 }
 
 .darkTheme :global(.handsontable .wtBorder) {
@@ -36,4 +32,7 @@ body {
 .darkTheme :global(.handsontable tr:hover),
 .darkTheme :global(.handsontable th:hover) {
   background-color: #2a2a2a;
+}
+.darkTheme :global(.handsontable th.ht__highlight) {
+  background-color: var(--hot-header-selected-background);
 }

@@ -13,6 +13,9 @@ const NavBar = () => {
         <div className="border border-teal-400 p-1 pl-5 pr-5 rounded-lg hover:underline">
           <Link href="/">Home</Link>
         </div>
+        <div className="border border-teal-400 p-1 pl-5 pr-5 rounded-lg hover:underline">
+          <Link href="/grid">Grid</Link>
+        </div>
       </nav>
     </>
   );

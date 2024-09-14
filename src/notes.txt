@@ -16,3 +16,8 @@ npm i ts-node -D
 npx prisma db seed
 
 npx prisma migrate dev --name dev
+
+Install Handsontable
+npm install handsontable @handsontable/react
+
+
